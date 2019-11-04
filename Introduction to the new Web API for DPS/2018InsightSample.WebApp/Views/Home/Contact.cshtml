@@ -1,0 +1,99 @@
+﻿@model InsightAPISample.WebApp.Models.ContactUsModel
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<h2>Contact Us</h2>
+
+<h4>More About You</h4>
+<hr />
+
+<form asp-action="Contact">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirmDescription" class="control-label"></label>
+                <input asp-for="FirmDescription" class="form-control" />
+                <span asp-validation-for="FirmDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Memo" class="control-label"></label>
+                <textarea asp-for="Memo" class="form-control" rows="20"></textarea>
+                <span asp-validation-for="Memo" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" value="Submit >" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-12">
+        <blockquote>
+            <p>
+                This page uses a Rest API call to VantagePoint that saves a contact request to the contacts hub
+            </p>
+            <p>
+                In a real world application there would probably be some workflow that would bring this to the attention 
+                of someone to reach out to the customer. This could also be used with the Leads and Activities CRM hubs
+            </p>
+            <p>
+                The reason why this code is so relatively short is that the ContactUsModel and the Contact model in 
+                VantagePoint share the same names which allows JSON to convert it without any extra input.
+            </p>
+        </blockquote>
+
+        <pre><code>
+            var authClient = await _repository.GetAuthorizedVantagePointClientAsync();
+
+            //set up the query string to post contacts:
+            string requestUri = $"contact";
+
+            //this only works because the model and the contact class in VantagePoint
+            //share the same names!
+            var result = await _repository.PostAsync(authClient, requestUri, model);
+
+            return RedirectToAction("ThankYou", model);
+
+        </code></pre>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

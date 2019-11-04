@@ -1,0 +1,62 @@
+﻿@model InsightAPISample.WebApp.Models.ExportViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Export Contacts to MailChimp</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Enter the name of the export definition</label>
+                <input asp-for="ExportDefinitionName" class="form-control" />
+                <span asp-validation-for="ExportDefinitionName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Find" class="btn btn-default"  />
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model?.Contacts?.Count > 0)
+{
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-md-4">Email Address</th>
+                    <th class="col-md-4">First Name</th>
+                    <th class="col-md-4">Last Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Contacts)
+                {
+
+                <tr>
+                    <td class="col-md-4">@Html.DisplayFor(modelItem => item.EMailAddress)</td>
+                    <td class="col-md-4">@Html.DisplayFor(modelItem => item.FirstName)</td>
+                    <td class="col-md-4">@Html.DisplayFor(modelItem => item.LastName)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("Send To MailChimp", "SendToMailChimp", new { Model.ExportDefinitionName });
+    </div>
+</div>
+
+    }

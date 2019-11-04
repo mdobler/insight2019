@@ -3,3 +3,14 @@
 ################################################################################
 
 /Introduction to the new Web API for DPS/2018InsightSample.WebApp/bin/Debug
+/Introduction to the new Web API for DPS/2018InsightSample.WebApp/obj
+*.user
+/Custom Reports For Vision and DPS/CustomReports_Phase1/bin/Debug
+/Custom Reports For Vision and DPS/CustomReports_Phase2/bin/Debug
+/Custom Reports For Vision and DPS/CustomReports_Phase3/bin/Debug
+/Custom Reports For Vision and DPS/CustomReports_Phase4/bin/Debug
+*.rsuser
+/Custom Reports For Vision and DPS/CustomReports_Phase5/bin/Debug
+/Custom Reports For Vision and DPS/CustomReports_Phase6/bin/Debug
+*.sqlite
+/.vs

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<InsightAPISample.WebApp.Models.ProjectViewModel>
+
+@{
+    ViewData["Title"] = "TopTen";
+}
+
+<h2>Our Top 10 Project List</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WBS1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LongName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WBS1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LongName)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-12">
+        <blockquote>
+            <p>
+                This page uses a Rest API call to VantagePoint that returns a list of 10 projects. It is arbitrarily filtered
+                by the charge type (regular projects only) and the project type (for demo purposes).
+            </p>
+            <p>
+                In a real world application there would probably be some custom checkbox in the project setup that would
+                allow a user to "share" the project on the internet.
+            </p>
+         </blockquote>
+
+        <pre><code>
+            var authClient = await _repository.GetAuthorizedVantagePointClientAsync();
+
+            //set up the query string to return projects:
+            string requestUri = $"project?limit=10";
+            //only display top level projects
+            requestUri += $"&wbstype=wbs1";
+            //add a fieldFilter to the query string so the API only returns fields that are needed
+            requestUri += $"&{RESTHelper.GetFieldFilterParamString(new string[] { "WBS1", "Name", "LongName" })}";
+            //add a search to it
+            List<Helpers.FilterHash>
+                searchItems = new List<FilterHash>
+                    () {
+                    new Helpers.FilterHash() {name="ChargeType", value="R", tablename="PR", opp="=", searchlevel=1 },   //regular projects only
+                    new Helpers.FilterHash() {name="ProjectType", value="07", tablename="PR", opp="=", searchlevel=1 }  //only items with project type 07
+                    };
+                    requestUri += RESTHelper.GetSearchFilterParamString(searchItems);
+
+                    //call with dynamic type (returns JObject)
+                    var TopTenList = await _repository.GetAsync(authClient, requestUri);
+
+                    //if you build a model that matches the expected result then it can be cast automatically
+                    var TopTenListTyped = await _repository.GetAsync<List<Models.ProjectModelView>>(authClient, requestUri);
+
+            return View(TopTenListTyped);
+
+        </code></pre>
+    </div>
+</div>

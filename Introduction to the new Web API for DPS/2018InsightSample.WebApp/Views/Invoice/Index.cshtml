@@ -1,0 +1,91 @@
+﻿@model InsightAPISample.WebApp.Models.InvoiceViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Invoice Review</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Enter your invoice number</label>
+                <input asp-for="RequestInvoice" class="form-control" />
+                <span asp-validation-for="RequestInvoice" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Find" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (String.IsNullOrEmpty(Model?.Invoice) == false)
+{
+<div class="row">
+    <div class="col-md-12">
+        <table>
+
+            <tbody>
+                <tr>
+                    <td class="label label-primary">Invoice: </td>
+                    <td>@Html.DisplayFor(model => model.Invoice)</td>
+                </tr>
+                <tr>
+                    <td class="label label-primary">Invoice Date: </td>
+                    <td>@Html.DisplayFor(model => model.InvoiceDate)</td>
+                </tr>
+                <tr>
+                    <td class="label label-primary">Main Project #: </td>
+                    <td>@Html.DisplayFor(model => model.MainWBS1)</td>
+                </tr>
+                <tr>
+                    <td class="label label-primary">Project Name: </td>
+                    <td>@Html.DisplayFor(model => model.ProjectName)</td>
+                </tr>
+                <tr>
+                    <td class="label label-primary">Description: </td>
+                    <td>@Html.DisplayFor(model => model.Description)</td>
+                </tr>
+                <tr>
+                    <td class="label label-primary">Client Name: </td>
+                    <td>@Html.DisplayFor(model => model.ClientName)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-md-3">Section</th>
+                    <th class="text-right col-md-9">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Sections)
+                {
+
+                    <tr>
+                        <td class="col-md-3">@Html.DisplayFor(modelItem => item.Section)</td>
+                        <td class="text-right col-md-9">@Html.DisplayFor(modelItem => item.FinalAmount)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th class="col-md-3">Total:</th>
+                    <th class="text-right col-md-9">@Html.DisplayFor(model => model.TotalInvoiceAmount)</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+}
+
+
+
